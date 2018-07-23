@@ -360,3 +360,5 @@ console.log(max);
 // Math.ceil()向上舍入
 // Math.floor()向下舍入
 // Math.round() 四舍五入
+console.log(Math.ceil(23.5));
+console.log(Math.floor(21.1));
