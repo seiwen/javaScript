@@ -385,135 +385,192 @@
 // console.log(color);
 
 
-//第6章  面向对象的程序设计
+// //第6章  面向对象的程序设计
 
-//6.1 理解对象
-var person = new Object();
-person.name = "lifeng";
-person.age = 27;
-person.job = "Front-end Engineer";
-person.sayName = function(){
-    console.log(this.name);
+// //6.1 理解对象
+// var person = new Object();
+// person.name = "lifeng";
+// person.age = 27;
+// person.job = "Front-end Engineer";
+// person.sayName = function(){
+//     console.log(this.name);
+// }
+// person.sayName();
+// //对象字面量语法
+// var person = {
+//     name: 'lifeng',
+//     age: 27,
+//     job: 'Front-end Engineer',
+//     sayName: function () {
+//         console.log(this.name);
+//     }
+// };
+
+// //1.数据属性
+// // Configurable 表示是否通过delete删除属性从而重新定义属性，能否修改属性的特性，或者能否把属性修改为访问器属性。默认为true
+// // Enumerable 表示能否通过for-in循环返回属性。默认为true
+// // Writable 表示能否修改属性的值。默认为true
+// // Value 包含这个属性的值。默认为undefined
+// // 修改属性默认的特性的方法 Object.defineProperty()
+// var person = {};
+// Object.defineProperty(person, 'name',{
+//     writable: false,
+//     value: 'feng'
+// });
+// console.log(person.name);
+// person.name = 'li';
+// console.log(person.name);
+// //2.访问器属性
+// // Configurable 表示是否通过delete删除属性从而重新定义属性，能否修改属性的特性，或者能否把属性修改为访问器属性。默认为true
+// // Enumerable 表示能否通过for-in循环返回属性。默认为true
+// // Get 在读取属性时调用的函数。默认为undefined
+// // Set 在写入属性时调用的函数。默认为undefined
+// //定义方法 Object.defineProperty()
+// var book = {
+//     _year: 2017,
+//     edition: 1
+// };
+// Object.defineProperty(book, 'year', {
+//     get: function(){
+//         return this._year;
+//     },
+//     set: function(newValue){
+//         if(newValue > 2017) {
+//             this._year = newValue;
+//             this.edition += newValue - 2017;
+//         }
+//     }
+// });
+// book.year = 2018;
+// console.log(book.edition);
+// //定义多个属性的方法 Object.defineProperties()
+// var book = {};
+// Object.defineProperties(book, {
+//     _year: {
+//         value: 2017
+//     },
+//     edition: {
+//         value: 1
+//     },
+//     year: {
+//         get: function() {
+//             return this._year;
+//         },
+//         set: function(newValue) {
+//             if(newValue > 2017) {
+//                 this._year = newValue;
+//                 this.edition += newValue - 2017;
+//             }
+//         }
+//     }
+// });
+// //可以取得给定属性的描述符方法 Object.getOwnPropertyDescriptor()
+// var descriptor = Object.getOwnPropertyDescriptor(book, '_year');
+// console.log(descriptor.value);
+// console.log(descriptor.configurable);
+// console.log(typeof descriptor.get);
+// var descriptor = Object.getOwnPropertyDescriptor(book, 'year');
+// console.log(descriptor.value);
+// console.log(descriptor.configurable);
+// console.log(typeof descriptor.get);
+
+// //工厂模式
+// function createPerson(name, age, job) {
+//     var o = new Object();
+//     o.name = name;
+//     o.age = age;
+//     o.job = job;
+//     o.sayName = function () {
+//         console.log(this.name);
+//     }
+// }
+// var person1 = createPerson('lifeng', 27, 'Front-end Engineer');
+// var person2 = createPerson('feng', 26, 'Doctor');
+// //取对象的原型 getPrototypeOf()
+
+// //hasOwnProperty()方法可以检测一个属性是存在实例中还是存在于原型中
+// function Person() {
+// }
+// Person.prototype.name = 'lifeng';
+// Person.prototype.age = 27;
+// Person.prototype.job = 'Front-end Engineer';
+// Person.prototype.sayName = function () {
+//     console.log(this.name);
+// };
+// var person1 = new Person();
+// var person2 = new Person();
+// console.log(person1.hasOwnProperty('name'));
+// person1.name = 'feng';
+// console.log(person1.name);
+// console.log(person1.hasOwnProperty('name'));
+// console.log(person2.name);
+// console.log(person2.hasOwnProperty('name'));
+// delete person1.name;
+// console.log(person1.name);
+// console.log(person1.hasOwnProperty('name'));
+
+// //Object.keys() 获取对象上所以可枚举的实例属性
+// var keys = Object.keys(Person.prototype);
+// console.log(keys);
+// var p1 = new Person();
+// p1.name = 'feng';
+// p1.age = 22;
+// var p1keys = Object.keys(p1);
+// console.log(p1keys);
+// var _keys = Object.getOwnPropertyNames(Person.prototype);
+// console.log(_keys);
+// //如果对constructor属性重要，写法如下
+// function Person() {
+// }
+// Person.prototype = {
+//     name: 'lifeng',
+//     age: '27',
+//     job: 'Front-end Engineer',
+//     sayName: function () {
+//         console.log(this.name);
+//     }
+// };
+// //重设构造函数，只适合兼容ES5的浏览器
+// Object.defineProperty(Person, 'constructor',{
+//     enumerable: false,
+//     value: Person
+// });
+//实例中的指针仅指向原型，而不指向构造函数
+// function Person() {
+
+// }
+// var friend = new Person();
+// Person.prototype = {
+//     constructor: Person,
+//     name: 'lifeng',
+//     age: 27,
+//     job: 'Front-end Engieer',
+//     sayName: function () {
+//         console.log(this.name);
+//     }
+// };
+// friend.sayName();//报错
+
+//组合使用构造函数模式和原型模式
+// 构造函数用于定义实例属性，而原型模式用于定义方法和共享的属性
+// 具备各自的实例副本，也同时共享着对方法的引用，并节省了内存，还支持向构造函数传递参数
+function Person(name, age, job) {
+    this.name = name;
+    this.age = age;
+    this.job = job;
+    this.friends = ['Shelby', 'Court'];
 }
-person.sayName();
-//对象字面量语法
-var person = {
-    name: 'lifeng',
-    age: 27,
-    job: 'Front-end Engineer',
+Person.prototype = {
+    constructor: Person,
     sayName: function () {
         console.log(this.name);
     }
 };
+var person1 = new Person('lifeng', 27, 'Front-end Engieer');
+var person2 = new Person('Greg', 22, 'Doctor');
+person1.friends.push('Van');
+console.log(person1.friends);
+console.log(person2.friends);
+console.log(person1.friends === person2.friends);
+console.log(person1.sayName === person2.sayName);
 
-//1.数据属性
-// Configurable 表示是否通过delete删除属性从而重新定义属性，能否修改属性的特性，或者能否把属性修改为访问器属性。默认为true
-// Enumerable 表示能否通过for-in循环返回属性。默认为true
-// Writable 表示能否修改属性的值。默认为true
-// Value 包含这个属性的值。默认为undefined
-// 修改属性默认的特性的方法 Object.defineProperty()
-var person = {};
-Object.defineProperty(person, 'name',{
-    writable: false,
-    value: 'feng'
-});
-console.log(person.name);
-person.name = 'li';
-console.log(person.name);
-//2.访问器属性
-// Configurable 表示是否通过delete删除属性从而重新定义属性，能否修改属性的特性，或者能否把属性修改为访问器属性。默认为true
-// Enumerable 表示能否通过for-in循环返回属性。默认为true
-// Get 在读取属性时调用的函数。默认为undefined
-// Set 在写入属性时调用的函数。默认为undefined
-//定义方法 Object.defineProperty()
-var book = {
-    _year: 2017,
-    edition: 1
-};
-Object.defineProperty(book, 'year', {
-    get: function(){
-        return this._year;
-    },
-    set: function(newValue){
-        if(newValue > 2017) {
-            this._year = newValue;
-            this.edition += newValue - 2017;
-        }
-    }
-});
-book.year = 2018;
-console.log(book.edition);
-//定义多个属性的方法 Object.defineProperties()
-var book = {};
-Object.defineProperties(book, {
-    _year: {
-        value: 2017
-    },
-    edition: {
-        value: 1
-    },
-    year: {
-        get: function() {
-            return this._year;
-        },
-        set: function(newValue) {
-            if(newValue > 2017) {
-                this._year = newValue;
-                this.edition += newValue - 2017;
-            }
-        }
-    }
-});
-//可以取得给定属性的描述符方法 Object.getOwnPropertyDescriptor()
-var descriptor = Object.getOwnPropertyDescriptor(book, '_year');
-console.log(descriptor.value);
-console.log(descriptor.configurable);
-console.log(typeof descriptor.get);
-var descriptor = Object.getOwnPropertyDescriptor(book, 'year');
-console.log(descriptor.value);
-console.log(descriptor.configurable);
-console.log(typeof descriptor.get);
-
-//工厂模式
-function createPerson(name, age, job) {
-    var o = new Object();
-    o.name = name;
-    o.age = age;
-    o.job = job;
-    o.sayName = function () {
-        console.log(this.name);
-    }
-}
-var person1 = createPerson('lifeng', 27, 'Front-end Engineer');
-var person2 = createPerson('feng', 26, 'Doctor');
-//取对象的原型 getPrototypeOf()
-
-//hasOwnProperty()方法可以检测一个属性是存在实例中还是存在于原型中
-function Person() {
-}
-Person.prototype.name = 'lifeng';
-Person.prototype.age = 27;
-Person.prototype.job = 'Front-end Engineer';
-Person.prototype.sayName = function () {
-    console.log(this.name);
-};
-var person1 = new Person();
-var person2 = new Person();
-console.log(person1.hasOwnProperty('name'));
-person1.name = 'feng';
-console.log(person1.name);
-console.log(person1.hasOwnProperty('name'));
-console.log(person2.name);
-console.log(person2.hasOwnProperty('name'));
-delete person1.name;
-console.log(person1.name);
-console.log(person1.hasOwnProperty('name'));
-
-//Object.keys() 获取对象上所以可枚举的实例属性
-var keys = Object.keys(Person.prototype);
-console.log(keys);
-var p1 = new Person();
-p1.name = 'feng';
-p1.age = 22;
-var p1keys = Object.keys(p1);
-console.log(p1keys);
