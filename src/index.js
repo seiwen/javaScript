@@ -473,3 +473,47 @@ var descriptor = Object.getOwnPropertyDescriptor(book, 'year');
 console.log(descriptor.value);
 console.log(descriptor.configurable);
 console.log(typeof descriptor.get);
+
+//工厂模式
+function createPerson(name, age, job) {
+    var o = new Object();
+    o.name = name;
+    o.age = age;
+    o.job = job;
+    o.sayName = function () {
+        console.log(this.name);
+    }
+}
+var person1 = createPerson('lifeng', 27, 'Front-end Engineer');
+var person2 = createPerson('feng', 26, 'Doctor');
+//取对象的原型 getPrototypeOf()
+
+//hasOwnProperty()方法可以检测一个属性是存在实例中还是存在于原型中
+function Person() {
+}
+Person.prototype.name = 'lifeng';
+Person.prototype.age = 27;
+Person.prototype.job = 'Front-end Engineer';
+Person.prototype.sayName = function () {
+    console.log(this.name);
+};
+var person1 = new Person();
+var person2 = new Person();
+console.log(person1.hasOwnProperty('name'));
+person1.name = 'feng';
+console.log(person1.name);
+console.log(person1.hasOwnProperty('name'));
+console.log(person2.name);
+console.log(person2.hasOwnProperty('name'));
+delete person1.name;
+console.log(person1.name);
+console.log(person1.hasOwnProperty('name'));
+
+//Object.keys() 获取对象上所以可枚举的实例属性
+var keys = Object.keys(Person.prototype);
+console.log(keys);
+var p1 = new Person();
+p1.name = 'feng';
+p1.age = 22;
+var p1keys = Object.keys(p1);
+console.log(p1keys);
