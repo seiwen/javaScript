@@ -551,26 +551,40 @@
 // };
 // friend.sayName();//报错
 
-//组合使用构造函数模式和原型模式
-// 构造函数用于定义实例属性，而原型模式用于定义方法和共享的属性
-// 具备各自的实例副本，也同时共享着对方法的引用，并节省了内存，还支持向构造函数传递参数
+// //组合使用构造函数模式和原型模式
+// // 构造函数用于定义实例属性，而原型模式用于定义方法和共享的属性
+// // 具备各自的实例副本，也同时共享着对方法的引用，并节省了内存，还支持向构造函数传递参数
+// function Person(name, age, job) {
+//     this.name = name;
+//     this.age = age;
+//     this.job = job;
+//     this.friends = ['Shelby', 'Court'];
+// }
+// Person.prototype = {
+//     constructor: Person,
+//     sayName: function () {
+//         console.log(this.name);
+//     }
+// };
+// var person1 = new Person('lifeng', 27, 'Front-end Engieer');
+// var person2 = new Person('Greg', 22, 'Doctor');
+// person1.friends.push('Van');
+// console.log(person1.friends);
+// console.log(person2.friends);
+// console.log(person1.friends === person2.friends);
+// console.log(person1.sayName === person2.sayName);
+
+//动态原型模式
 function Person(name, age, job) {
     this.name = name;
     this.age = age;
     this.job = job;
-    this.friends = ['Shelby', 'Court'];
-}
-Person.prototype = {
-    constructor: Person,
-    sayName: function () {
-        console.log(this.name);
+    if( typeof this.sayName != "function"){
+        Person.prototype.sayName = function () {
+            console.log(this.name);
+        }
     }
-};
-var person1 = new Person('lifeng', 27, 'Front-end Engieer');
-var person2 = new Person('Greg', 22, 'Doctor');
-person1.friends.push('Van');
-console.log(person1.friends);
-console.log(person2.friends);
-console.log(person1.friends === person2.friends);
-console.log(person1.sayName === person2.sayName);
+}
+var friend = new Person('lifeng', 27, 'Front-end Engieer');
+friend.sayName();
 
