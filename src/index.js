@@ -574,17 +574,55 @@
 // console.log(person1.friends === person2.friends);
 // console.log(person1.sayName === person2.sayName);
 
-//动态原型模式
-function Person(name, age, job) {
-    this.name = name;
-    this.age = age;
-    this.job = job;
-    if( typeof this.sayName != "function"){
-        Person.prototype.sayName = function () {
-            console.log(this.name);
-        }
-    }
-}
-var friend = new Person('lifeng', 27, 'Front-end Engieer');
-friend.sayName();
+// //动态原型模式
+// function Person(name, age, job) {
+//     this.name = name;
+//     this.age = age;
+//     this.job = job;
+//     if( typeof this.sayName != "function"){
+//         Person.prototype.sayName = function () {
+//             console.log(this.name);
+//         }
+//     }
+// }
+// var friend = new Person('lifeng', 27, 'Front-end Engieer');
+// friend.sayName();
+// //寄生构造函数模式
+// function SpecialArray() {
+//     //创建数组
+//     var values = new Array();
+//     //添加值
+//     values.push.apply(values, arguments);
+//     //添加方法
+//     values.toPipedString = function () {
+//         return this.join('|');
+//     };
+//     //返回数组
+//     return values;
+// }
+// var colors = new SpecialArray('red', 'blue', 'green');
+// console.log(colors.toPipedString());
 
+
+//继承（接口继承和实现继承）
+//接口继承只继承方法签名，而实现继承则继承实际的方法
+//然而，函数没有签名，在ECMAScript中无法实现接口继承。ECMAScript只支持实现继承，而且其实现继承主要是依靠原型链来实现的
+
+//----原型链
+function SuperType() {
+    this.property = true;
+}
+SuperType.prototype.getSuperValue = function () {
+    return this.property;
+};
+function SubType() {
+    this.subproperty = false;
+}
+//继承了SuperType
+SubType.prototype = new SuperType();
+SubType.prototype.getSubValue = function () {
+    return this.subproperty;
+};
+var instance = new SubType();
+console.log(instance.getSuperValue());
+//原型链中 确定原型和实例的关系方法有 instanceof操作符和isPrototypeOf()方法
