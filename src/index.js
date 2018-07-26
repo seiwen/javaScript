@@ -605,25 +605,108 @@
 // console.log(colors.toPipedString());
 
 
-//继承（接口继承和实现继承）
-//接口继承只继承方法签名，而实现继承则继承实际的方法
-//然而，函数没有签名，在ECMAScript中无法实现接口继承。ECMAScript只支持实现继承，而且其实现继承主要是依靠原型链来实现的
+// //继承（接口继承和实现继承）
+// //接口继承只继承方法签名，而实现继承则继承实际的方法
+// //然而，函数没有签名，在ECMAScript中无法实现接口继承。ECMAScript只支持实现继承，而且其实现继承主要是依靠原型链来实现的
 
-//----原型链
-function SuperType() {
-    this.property = true;
+// //----原型链
+// function SuperType() {
+//     this.property = true;
+// }
+// SuperType.prototype.getSuperValue = function () {
+//     return this.property;
+// };
+// function SubType() {
+//     this.subproperty = false;
+// }
+// //继承了SuperType
+// SubType.prototype = new SuperType();
+// SubType.prototype.getSubValue = function () {
+//     return this.subproperty;
+// };
+// var instance = new SubType();
+// console.log(instance.getSuperValue());
+// //原型链中 确定原型和实例的关系方法有 instanceof操作符和isPrototypeOf()方法
+// //借用构造函数
+// function SuperType() {
+//     this.colors = ['red', 'blue', 'green'];
+// }
+// function SubType() {
+//     //继承了SuperType
+//     SuperType.call(this);
+// }
+// var instance1 = new SubType();
+// instance1.colors.push('black');
+// console.log(instance1.colors);
+// var instance2 = new SubType();
+// console.log(instance2.colors);
+
+// //组合继承----常用继承模式
+// function SuperType(name) {
+//     this.name = name;
+//     this.colors = ['red', 'blue', 'green'];
+// }
+// SuperType.prototype.sayName = function () {
+//     console.log(this.name);
+// };
+// function SubType(name, age) {
+//     //继承属性
+//     SuperType.call(this, name);
+//     this.age = age;
+// }
+// //继承方法
+// SubType.prototype = new SuperType();
+// SubType.prototype.sayAge = function () {
+//     console.log(this.age);
+// };
+// var instance1 = new SubType('lifeng', 27);
+// instance1.colors.push('black');
+// console.log(instance1.colors);
+// instance1.sayName()
+// instance1.sayAge()
+// var instance2 = new SubType('feng', 27);
+// console.log(instance2.colors);
+// instance2.sayName();
+// instance2.sayAge();
+
+// //原型式继承
+// function object(o) {
+//     function F() {}
+//     F.prototype = o;
+//     return new F();
+// }
+// var person = {
+//     name: 'lifeng',
+//     friends: ['shelby', 'court', 'van']
+// };
+// //var anoterPerson = object(person);
+// var anoterPerson = Object.create(person);//Object.create()---ES5新增方法
+// anoterPerson.name = 'feng';
+// anoterPerson.friends.push('rob');
+// //var yetAnotherPerson = object(person);
+// var yetAnotherPerson = Object.create(person);
+// yetAnotherPerson.name = 'li';
+// yetAnotherPerson.friends.push('barbie');
+// console.log(person.friends);
+
+//寄生式继承
+function object(o) {
+    function F() {}
+    F.prototype = o;
+    return new F();
 }
-SuperType.prototype.getSuperValue = function () {
-    return this.property;
-};
-function SubType() {
-    this.subproperty = false;
+function createAnother(original) {
+    var clone = object(original);
+    clone.sayHi = function () {
+        console.log('hi');
+    };
+    return clone;
 }
-//继承了SuperType
-SubType.prototype = new SuperType();
-SubType.prototype.getSubValue = function () {
-    return this.subproperty;
+var person = {
+    name: 'lifeng',
+    friend: ['shelby', 'court', 'van']
 };
-var instance = new SubType();
-console.log(instance.getSuperValue());
-//原型链中 确定原型和实例的关系方法有 instanceof操作符和isPrototypeOf()方法
+var  anotherPerson = createAnother(person);
+anotherPerson.sayHi();
+
+//寄生组合式继承
