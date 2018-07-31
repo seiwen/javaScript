@@ -689,24 +689,52 @@
 // yetAnotherPerson.friends.push('barbie');
 // console.log(person.friends);
 
-//寄生式继承
-function object(o) {
-    function F() {}
-    F.prototype = o;
-    return new F();
-}
-function createAnother(original) {
-    var clone = object(original);
-    clone.sayHi = function () {
-        console.log('hi');
-    };
-    return clone;
-}
-var person = {
-    name: 'lifeng',
-    friend: ['shelby', 'court', 'van']
-};
-var  anotherPerson = createAnother(person);
-anotherPerson.sayHi();
+// //寄生式继承
+// function object(o) {
+//     function F() {}
+//     F.prototype = o;
+//     return new F();
+// }
+// function createAnother(original) {
+//     var clone = object(original);
+//     clone.sayHi = function () {
+//         console.log('hi');
+//     };
+//     return clone;
+// }
+// var person = {
+//     name: 'lifeng',
+//     friend: ['shelby', 'court', 'van']
+// };
+// var  anotherPerson = createAnother(person);
+// anotherPerson.sayHi();
 
-//寄生组合式继承
+// //寄生组合式继承
+
+
+
+//第7章 函数表达式
+    //匿名函数（拉姆达函数）
+    var functionName = function (arg0, arg1, arg2)) {
+    //函数体
+    };
+
+// 7.1 递归
+function factorial(num) {
+    if (num <= 1) {
+        return 1;
+    } else {
+        return num * factorial(num - 1);
+    }
+}
+//arguments.callee是一个指向正在执行的函数的指针，因此可以用它来实现对函数的递归调用，但是不能再严格模式下使用，否则会报错
+//针对这个问题可以使用命名函数表达式来解决----如下
+var factorial = (function f(num) {
+    if (num <= 1) {
+        return 1;
+    } else {
+        return num * f(num-1);
+    }
+});
+
+//7.2闭包
