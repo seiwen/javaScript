@@ -713,28 +713,90 @@
 
 
 
-//第7章 函数表达式
-    //匿名函数（拉姆达函数）
-    var functionName = function (arg0, arg1, arg2)) {
-    //函数体
-    };
+// //第7章 函数表达式
+//     //匿名函数（拉姆达函数）
+//     var functionName = function (arg0, arg1, arg2) {
+//     //函数体
+//     };
 
-// 7.1 递归
-function factorial(num) {
-    if (num <= 1) {
-        return 1;
-    } else {
-        return num * factorial(num - 1);
+// // 7.1 递归
+// function factorial(num) {
+//     if (num <= 1) {
+//         return 1;
+//     } else {
+//         return num * factorial(num - 1);
+//     }
+// }
+// //arguments.callee是一个指向正在执行的函数的指针，因此可以用它来实现对函数的递归调用，但是不能再严格模式下使用，否则会报错
+// //针对这个问题可以使用命名函数表达式来解决----如下
+// var factorial = (function f(num) {
+//     if (num <= 1) {
+//         return 1;
+//     } else {
+//         return num * f(num-1);
+//     }
+// });
+
+// //7.2闭包
+// function creatFunctions() {
+//     var result = new Array();
+//     for (var i=0; i < 10; i++){
+//         result[i] = function () {
+//             return i;
+//         };
+//     }
+//     return result;
+// }
+// function creatFunctions(){
+//     var result  = new Array();
+//     for (var i = 0; i<10; i++){
+//         result[i] = function (num) {
+//             return function () {
+//                 return num;
+//             };
+//         }(i);
+//     }
+//     return result;
+// }
+// //7.2.2 关于this对象
+// var name = 'The Window';
+// var object = {
+//     name : 'My Object',
+//     getNameFunc : function () {
+//         var that = this;
+//         return function () {
+//             return that.name;
+//         };
+//     }
+// };
+// console.log(object.getNameFunc()());
+// //7.2.3内存泄漏
+// function assignHandler() {
+//     var element = document.getElementById('someElement');
+//     var id = element.id;
+//     element.onclick = function () {
+//         console.log(id);
+//     };
+//     element = null;
+// }
+
+// //7.3模仿块级作用域
+// //私有作用域
+// (function () {
+//     //块级作用域
+// })();
+
+//7.4 私有变量
+function MyObject() {
+    //私有变量和私有函数
+    var privateVariable = 10;
+    function privateFunction() {
+        return false;
+    }
+    //特权方法
+    this.publicMethod = function () {
+        privateVariable++;
+        return privateFunction();
     }
 }
-//arguments.callee是一个指向正在执行的函数的指针，因此可以用它来实现对函数的递归调用，但是不能再严格模式下使用，否则会报错
-//针对这个问题可以使用命名函数表达式来解决----如下
-var factorial = (function f(num) {
-    if (num <= 1) {
-        return 1;
-    } else {
-        return num * f(num-1);
-    }
-});
-
-//7.2闭包
+//7.4.1 静态私有变量
